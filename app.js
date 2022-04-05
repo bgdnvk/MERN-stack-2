@@ -1,12 +1,14 @@
+//example on how to import the whole object called config
 import * as config from './utils/config.js'
-
+//get the express object and assign it to app
 import express from "express";
 const app = express()
-
+//express router
 import { itemsRouter } from './controllers/items.js'
-
+//mongoose is needed to connect to the database
 import mongoose from 'mongoose'
-
+//async function so we can connect to the database
+//throws an error if the connection fails
 const connectToDB = async () => {
     try {
         await mongoose.connect(config.MONGODB_URI)
@@ -15,10 +17,12 @@ const connectToDB = async () => {
         console.log(`error connecting to the db: ${e}`)
     }
 }
+//run the function so we are connected to the database
 connectToDB()
-
+//------------- middleware -------------//
+//allow the server read json data
 app.use(express.json())
-
+//define the endpoint: localhost:3001/api/items for the router
 app.use('/api/items', itemsRouter)
 
 export { app }
