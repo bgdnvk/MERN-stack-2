@@ -11,4 +11,5 @@ test('GET call', async () => {
     await api
         .get('/api/items')
         .expect(200)
+        .expect('Content-Type', /application\/json/)
 })
