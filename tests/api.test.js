@@ -5,29 +5,33 @@ const api = supertest(app)
 //in order to use mongoose methods we need the mongoose model
 import { Item } from '../models/item'
 
-//run npm test -- -t "GET call"
-//test GET or READ call on localhost:3001/api/items endpoint
-test('GET call', async () => {
-    await api
-        .get('/api/items')
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
+//npm test -- -t "GET calls"
+describe('GET calls', () => {
+    //run npm test -- -t "GET call"
+    //test GET or READ call on localhost:3001/api/items endpoint
+    test('GET call', async () => {
+        await api
+            .get('/api/items')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+    })
+    //npm test -- -t "GET one"
+    //GET item by id
+    test('GET one', async () => {
+        //get all the items
+        const items = await Item.find({})
+        //get the the first item parsed to JSON
+        const firstItem = items[0].toJSON()
+        //get the result expecting success and JSON data
+        const resItem = await
+            api.get(`/api/items/${firstItem.id}`)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        //check if the item has the same id and the route works as expected
+        expect(resItem.body.id).toEqual(firstItem.id)
+    })
 })
-//npm test -- -t "GET one"
-//GET item by id
-test('GET one', async () => {
-    //get all the items
-    const items = await Item.find({})
-    //get the the first item parsed to JSON
-    const firstItem = items[0].toJSON()
-    //get the result expecting success and JSON data
-    const resItem = await
-        api.get(`/api/items/${firstItem.id}`)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-    //check if the item has the same id and the route works as expected
-    expect(resItem.body.id).toEqual(firstItem.id)
-})
+
 
 //run npm test -- -t "POST call"
 //POST
