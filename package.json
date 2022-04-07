@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "2nd chapter of MERN series",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,8 @@
     "express-async-errors": "^3.1.1",
     "mongoose": "^6.2.9",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }
