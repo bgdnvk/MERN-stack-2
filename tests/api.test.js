@@ -17,9 +17,9 @@ test('GET call', async () => {
 //GET item by id
 test('GET one', async () => {
     //get all the items
-    const itemsAtStart = await Item.find({})
+    const items = await Item.find({})
     //get the the first item parsed to JSON
-    const firstItem = itemsAtStart[0].toJSON()
+    const firstItem = items[0].toJSON()
     //get the result expecting success and JSON data
     const resItem = await
         api.get(`/api/items/${firstItem.id}`)
