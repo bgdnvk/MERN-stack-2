@@ -1,5 +1,5 @@
-// import { sumFunction } from "../utils/test_helper"
-const { sumFunction } = require("../utils/test_helper")
+import { sumFunction } from "../utils/test_helper"
+// const { sumFunction } = require("../utils/test_helper")
 //tests take a description and a function
 test('test sumFunction, expected to pass', () => {
     const a = 5
