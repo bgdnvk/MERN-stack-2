@@ -13,6 +13,22 @@ test('GET call', async () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 })
+//npm test -- -t "GET one"
+//GET item by id
+test('GET one', async () => {
+    //get all the items
+    const itemsAtStart = await Item.find({})
+    //get the the first item parsed to JSON
+    const firstItem = itemsAtStart[0].toJSON()
+    //get the result expecting success and JSON data
+    const resItem = await
+        api.get(`/api/items/${firstItem.id}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+    //check if the item has the same id and the route works as expected
+    expect(resItem.body.id).toEqual(firstItem.id)
+})
+
 //run npm test -- -t "POST call"
 //POST
 test('POST call', async () => {
