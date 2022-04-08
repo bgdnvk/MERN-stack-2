@@ -1,9 +1,18 @@
+import mongoose from 'mongoose'
 import supertest from 'supertest'
 import { app } from '../app.js'
 //use the supertest object as our API
 const api = supertest(app)
 //in order to use mongoose methods we need the mongoose model
 import { Item } from '../models/item'
+//get an array of items for our db
+import { initialItems } from './test_helper.js'
+
+//before making any test delete the current db and put our original data
+beforeEach(async () => {
+    await Item.deleteMany({})
+    await Item.insertMany(initialItems)
+})
 
 //npm test -- -t "GET calls"
 describe('GET calls', () => {
@@ -60,6 +69,7 @@ test('POST call', async () => {
     //it should contain the description "sent from Jest!"
     expect(items[items.length-1].description).toBe("sent from Jest!")
 })
+
 //npm test -- -t "DELETE item"
 test('DELETE item', async () => {
     //get items and parse the one you want to delete to JSON
@@ -79,3 +89,6 @@ test('DELETE item', async () => {
     //expect the description from the deleted item to not be there
     expect(itemsDescriptions).not.toContain(itemToDelete.description)
 })
+
+//close the connection to the database
+afterAll(() => mongoose.connection.close())
