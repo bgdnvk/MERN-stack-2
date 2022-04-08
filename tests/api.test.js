@@ -30,8 +30,15 @@ describe('GET calls', () => {
         //check if the item has the same id and the route works as expected
         expect(resItem.body.id).toEqual(firstItem.id)
     })
+    test('check all items have ids', async () => {
+        //get all the items
+        const items = await api.get('/api/items')
+        //check that every item in our DB has the id property
+        for(const item of items.body){
+            expect(item.id).toBeDefined()
+        }
+    })
 })
-
 
 //run npm test -- -t "POST call"
 //POST
@@ -52,4 +59,23 @@ test('POST call', async () => {
     //let's check that the last item added was indeed newItem object
     //it should contain the description "sent from Jest!"
     expect(items[items.length-1].description).toBe("sent from Jest!")
+})
+//npm test -- -t "DELETE item"
+test('DELETE item', async () => {
+    //get items and parse the one you want to delete to JSON
+    const itemsAtStart = await Item.find({})
+    const itemToDelete = itemsAtStart[0].toJSON()
+    //delete the item by id
+    await api
+        .delete(`/api/items/${itemToDelete.id}`)
+        .expect(204)
+    //get all items from the database again
+    const itemsNow = await Item.find({})
+    //check if the number of current items is one less than before
+    expect(itemsNow).toHaveLength(itemsAtStart.length-1)
+    //get an array of all the descriptions inside the DB
+    //could get any other info like the id
+    const itemsDescriptions = itemsNow.map(i => i.toJSON().description)
+    //expect the description from the deleted item to not be there
+    expect(itemsDescriptions).not.toContain(itemToDelete.description)
 })
